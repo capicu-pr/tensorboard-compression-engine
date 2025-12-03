@@ -2,7 +2,8 @@
 """Test script to debug the compression plugin."""
 
 import sys
-sys.path.insert(0, '/media/volume/volume-dev/projects/tensorboard-compression-engine')
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent))
 
 from tensorboard.backend.event_processing import event_multiplexer as em
 from compression_board_plugin.compression_board_plugin.compression_plugin import CompressionPlugin

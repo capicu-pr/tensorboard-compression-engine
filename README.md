@@ -1,8 +1,124 @@
-# tensorboardX
+# TensorBoard Compression Plugin
 
 [![PyPI version](https://badge.fury.io/py/tensorboardX.svg)](https://badge.fury.io/py/tensorboardX)
-[![Documentation Status](https://readthedocs.org/projects/tensorboardx/badge/?version=latest)](https://tensorboardx.readthedocs.io/en/latest/?badge=latest)
-[![Coverage Status](https://codecov.io/gh/lanpa/tensorboardX/branch/master/graph/badge.svg)](https://codecov.io/gh/lanpa/tensorboardX/)
+
+A TensorBoard plugin for visualizing and analyzing model compression metrics with dynamic theme support, interactive charts, and comprehensive metrics visualization.
+
+## 🎯 Compression Plugin
+
+The **COMPRESSION** plugin provides a dedicated TensorBoard tab for visualizing and analyzing model compression metrics with:
+
+- **📊 Interactive Pareto Charts**: Visualize accuracy vs. model size, latency, memory, and energy consumption
+- **📋 Comprehensive Tables**: View relative metrics (ratios) and raw metrics (FP32/INT8 comparisons)
+- **🎨 Dynamic Theme Support**: Automatically matches TensorBoard's light/dark theme
+- **🔍 Run Filtering**: Sidebar with search and selection for comparing multiple models
+- **📥 Data Export**: Export compression data to CSV
+
+### Quick Start
+
+```bash
+# Install the compression plugin
+pip install -e compression_board_plugin/
+
+# Start TensorBoard with your log directory
+tensorboard --logdir runs/compression_benchmark
+
+# Open http://localhost:6006 and navigate to the COMPRESSION tab
+```
+
+### Features
+
+- **Pareto Frontier Visualization**: Interactive scatter plots showing accuracy trade-offs
+- **Relative Metrics Table**: Ratios (FP32/INT8) for accuracy, latency, energy, and size
+- **Raw Metrics Table**: Side-by-side comparison of FP32 and INT8 values
+- **Theme Integration**: Seamlessly matches TensorBoard's UI theme (light/dark mode)
+- **Run Color Coding**: Consistent color mapping between sidebar and charts
+
+### Data Format
+
+The plugin expects TensorBoard scalar metrics with the following tag structure:
+
+```
+{model_name}/metrics/accuracy/fp32
+{model_name}/metrics/accuracy/int8
+{model_name}/compression/speedup
+{model_name}/compression/size_ratio
+{model_name}/compression/accuracy_drop
+{model_name}/performance/model_size_mb/fp32
+{model_name}/performance/model_size_mb/int8
+{model_name}/performance/latency_ms/fp32
+{model_name}/performance/latency_ms/int8
+{model_name}/performance/energy_mw/fp32
+{model_name}/performance/energy_mw/int8
+```
+
+### Usage Examples
+
+#### Logging Compression Metrics
+
+```python
+from tensorboardX import SummaryWriter
+
+writer = SummaryWriter('runs/compression_benchmark')
+
+# Log FP32 metrics
+writer.add_scalar('alexnet/metrics/accuracy/fp32', 0.95, 0)
+writer.add_scalar('alexnet/performance/model_size_mb/fp32', 217.61, 0)
+writer.add_scalar('alexnet/performance/latency_ms/fp32', 261.02, 0)
+
+# Log INT8 metrics
+writer.add_scalar('alexnet/metrics/accuracy/int8', 0.94, 0)
+writer.add_scalar('alexnet/performance/model_size_mb/int8', 54.40, 0)
+writer.add_scalar('alexnet/performance/latency_ms/int8', 65.25, 0)
+
+# Log compression metrics
+writer.add_scalar('alexnet/compression/speedup', 4.0, 0)
+writer.add_scalar('alexnet/compression/size_ratio', 4.0, 0)
+writer.add_scalar('alexnet/compression/accuracy_drop', 0.01, 0)
+
+writer.close()
+```
+
+#### Using CompressionWriter (if available)
+
+```python
+from tensorboardX.compression import CompressionWriter
+
+writer = CompressionWriter('runs/my_experiment')
+
+# Log FP32 vs INT8 comparison
+writer.log_compression_comparison('alexnet', fp32_metrics, int8_metrics)
+
+# Log compression ratios
+writer.log_compression_ratios('alexnet', fp32_metrics, int8_metrics)
+
+writer.close()
+```
+
+### Compression Metrics
+
+#### Tag Organization
+
+Metrics are organized hierarchically:
+- `{model_name}/metrics/accuracy/fp32` - FP32 accuracy
+- `{model_name}/metrics/accuracy/int8` - INT8 accuracy
+- `{model_name}/compression/size_ratio` - Compression ratio
+- `{model_name}/compression/speedup` - Speedup factor
+- `{model_name}/compression/accuracy_drop` - Accuracy drop
+- `{model_name}/performance/` - Performance metrics (latency, model size, energy, memory)
+
+#### Key Metrics
+
+- **Compression Ratio**: `fp32_size / int8_size`
+- **Speedup**: `fp32_latency / int8_latency`
+- **Accuracy Drop**: `fp32_accuracy - int8_accuracy`
+- **Size Reduction**: Percentage reduction in model size
+
+---
+
+## tensorboardX
+
+This repository extends [tensorboardX](https://github.com/lanpa/tensorboardX) with compression-specific features. The base tensorboardX functionality is fully preserved.
 
 Write TensorBoard events with simple function call.
 
@@ -13,8 +129,9 @@ The current release (v2.6.3) is tested with PyTorch 2.6 / torchvision 0.21.0 / t
 
 * [FAQ](https://github.com/lanpa/tensorboardX/wiki)
 
-
 ## Install
+
+### Base tensorboardX
 
 `pip install tensorboardX`
 
@@ -30,12 +147,19 @@ Starting from tensorboardX 2.1, You need to install `soundfile` for the `add_aud
 
 `pip install soundfile`
 
+### Compression Plugin
+
+```bash
+# Install the compression plugin
+cd compression_board_plugin/
+pip install -e .
+```
+
 ## Example
 
 * Clone the files in https://github.com/lanpa/tensorboardX/tree/master/examples
 * Run the demo script: e.g. `python examples/demo.py`
 * Start TensorBoard with `tensorboard --logdir runs`  
-
 
 ```python
 # demo.py
@@ -118,3 +242,15 @@ https://github.com/tensorflow/tensorboard/pull/1138
 
 * [TeamHG-Memex/tensorboard_logger](https://github.com/TeamHG-Memex/tensorboard_logger)
 * [dmlc/tensorboard](https://github.com/dmlc/tensorboard)
+
+## License
+
+MIT License
+
+## Contributing
+
+This project extends tensorboardX for compression-specific use cases. Contributions welcome!
+
+## Related Projects
+
+* [tensorboardX](https://github.com/lanpa/tensorboardX) - Base library
