@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 """
-CLI tool to visualize compression engine benchmark results in TensorBoard.
+CLI tool to visualize compression benchmark results in TensorBoard.
 
-This script reads benchmark JSON files from the compression engine and
-converts them to TensorBoard event files for visualization.
+This script reads benchmark JSON files and converts them to TensorBoard event files for visualization.
 
 Usage:
     python scripts/visualize_benchmark.py <path_to_json>
-    python scripts/visualize_benchmark.py ../compression-engine/results/models_benchmark_results.json
+    python scripts/visualize_benchmark.py results/models_benchmark_results.json
 """
 
 import argparse
@@ -24,18 +23,18 @@ from tensorboardX.compression.benchmark import BenchmarkParser
 def main():
     """Main entry point for the visualization script."""
     parser = argparse.ArgumentParser(
-        description='Visualize compression engine benchmark results in TensorBoard',
+        description='Visualize compression benchmark results in TensorBoard',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
   # Visualize a benchmark JSON file
-  python scripts/visualize_benchmark.py ../compression-engine/results/models_benchmark_results.json
+  python scripts/visualize_benchmark.py results/models_benchmark_results.json
   
   # Specify custom output directory
   python scripts/visualize_benchmark.py benchmark.json --logdir runs/my_benchmark
   
   # Visualize multiple files
-  for file in ../compression-engine/results/*.json; do
+  for file in results/*.json; do
     python scripts/visualize_benchmark.py "$file"
   done
         """

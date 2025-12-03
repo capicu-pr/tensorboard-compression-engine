@@ -82,7 +82,7 @@ def example_benchmark_parser():
     print("=" * 70)
     
     # Path to benchmark JSON (adjust as needed)
-    json_path = Path(__file__).parent.parent.parent / 'compression-engine' / 'results' / 'models_benchmark_results.json'
+    json_path = Path(__file__).parent.parent / 'results' / 'models_benchmark_results.json'
     
     if not json_path.exists():
         print(f"⚠️  Benchmark file not found: {json_path}")

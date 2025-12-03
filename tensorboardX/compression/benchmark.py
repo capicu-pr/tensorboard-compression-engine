@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Benchmark parser for compression engine JSON results.
+Benchmark parser for compression JSON results.
 
-This module provides functionality to parse compression engine benchmark
+This module provides functionality to parse compression benchmark
 results from JSON files and convert them to TensorBoard event format.
 """
 
@@ -13,14 +13,13 @@ from ..compression import CompressionWriter
 
 
 class BenchmarkParser:
-    """Parser for compression engine benchmark JSON results.
+    """Parser for compression benchmark JSON results.
     
-    Reads JSON files from compression-engine/results/ and converts them
-    to TensorBoard events using CompressionWriter.
+    Reads JSON files and converts them to TensorBoard events using CompressionWriter.
     
     Example:
         >>> parser = BenchmarkParser()
-        >>> parser.log_benchmark_results('compression-engine/results/benchmark.json')
+        >>> parser.log_benchmark_results('results/benchmark.json')
     """
     
     def __init__(self, writer: Optional[CompressionWriter] = None):

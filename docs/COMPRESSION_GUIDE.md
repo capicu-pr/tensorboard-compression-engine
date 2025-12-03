@@ -8,11 +8,11 @@ Compression Board is a TensorBoard-based visualization platform specifically des
 
 ### 1. Visualize Existing Benchmark Results
 
-If you have benchmark results from the compression engine:
+If you have benchmark results in JSON format:
 
 ```bash
 # Convert JSON benchmark results to TensorBoard format
-python scripts/visualize_benchmark.py ../compression-engine/results/models_benchmark_results.json
+python scripts/visualize_benchmark.py results/models_benchmark_results.json
 
 # Launch TensorBoard
 tensorboard --logdir runs/compression_benchmark
@@ -118,7 +118,7 @@ from tensorboardX.compression.benchmark import log_benchmark_results
 
 # Convert JSON benchmark file to TensorBoard format
 writer = log_benchmark_results(
-    'compression-engine/results/benchmark.json',
+    'results/benchmark.json',
     logdir='runs/benchmark'
 )
 writer.close()
@@ -223,7 +223,6 @@ logger.log_epoch(epoch, train_loss, train_acc, train_f1,
 
 - [TensorBoard Documentation](https://www.tensorflow.org/tensorboard)
 - [tensorboardX Documentation](https://tensorboardx.readthedocs.io/)
-- [Compression Engine](../compression-engine/README.md)
 
 ## Support
 
