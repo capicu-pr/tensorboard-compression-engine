@@ -17,6 +17,9 @@ The **COMPRESSION** plugin provides a dedicated TensorBoard tab for visualizing 
 ### Quick Start
 
 ```bash
+# Clone this repository
+git clone https://github.com/capicu-pr/tensorboard-compression-engine.git
+
 # Install the compression plugin
 pip install -e compression_board_plugin/
 
@@ -25,14 +28,6 @@ tensorboard --logdir runs/compression_benchmark
 
 # Open http://localhost:6006 and navigate to the COMPRESSION tab
 ```
-
-### Features
-
-- **Pareto Frontier Visualization**: Interactive scatter plots showing accuracy trade-offs
-- **Relative Metrics Table**: Ratios (FP32/INT8) for accuracy, latency, energy, and size
-- **Raw Metrics Table**: Side-by-side comparison of FP32 and INT8 values
-- **Theme Integration**: Seamlessly matches TensorBoard's UI theme (light/dark mode)
-- **Run Color Coding**: Consistent color mapping between sidebar and charts
 
 ### Data Format
 
