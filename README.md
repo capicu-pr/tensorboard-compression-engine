@@ -4,6 +4,8 @@
 
 A TensorBoard plugin for visualizing and analyzing model compression metrics with dynamic theme support, interactive charts, and comprehensive metrics visualization.
 
+![Demo GIF - TensorBoard Compression Plugin](https://github.com/user-attachments/assets/42fea985-338d-464a-9818-303d864cc583)
+
 ## 🎯 Compression Plugin
 
 The **COMPRESSION** plugin provides a dedicated TensorBoard tab for visualizing and analyzing model compression metrics with:
