@@ -1,10 +1,10 @@
-# TensorBoard Compression Engine
+# TensorBoard Compression Plugin
 
 [![PyPI version](https://badge.fury.io/py/tensorboardX.svg)](https://badge.fury.io/py/tensorboardX)
 
-A TensorBoard-based visualization platform for model compression analysis, featuring a custom **COMPRESSION** plugin tab with dynamic theme support, interactive charts, and comprehensive metrics visualization.
+A TensorBoard plugin for visualizing and analyzing model compression metrics with dynamic theme support, interactive charts, and comprehensive metrics visualization.
 
-## 🎯 Compression Plugin (NEW!)
+## 🎯 Compression Plugin
 
 The **COMPRESSION** plugin provides a dedicated TensorBoard tab for visualizing and analyzing model compression metrics with:
 
@@ -52,7 +52,67 @@ The plugin expects TensorBoard scalar metrics with the following tag structure:
 {model_name}/performance/energy_mw/int8
 ```
 
-See [README_COMPRESSION.md](README_COMPRESSION.md) for detailed usage examples and integration guides.
+### Usage Examples
+
+#### Logging Compression Metrics
+
+```python
+from tensorboardX import SummaryWriter
+
+writer = SummaryWriter('runs/compression_benchmark')
+
+# Log FP32 metrics
+writer.add_scalar('alexnet/metrics/accuracy/fp32', 0.95, 0)
+writer.add_scalar('alexnet/performance/model_size_mb/fp32', 217.61, 0)
+writer.add_scalar('alexnet/performance/latency_ms/fp32', 261.02, 0)
+
+# Log INT8 metrics
+writer.add_scalar('alexnet/metrics/accuracy/int8', 0.94, 0)
+writer.add_scalar('alexnet/performance/model_size_mb/int8', 54.40, 0)
+writer.add_scalar('alexnet/performance/latency_ms/int8', 65.25, 0)
+
+# Log compression metrics
+writer.add_scalar('alexnet/compression/speedup', 4.0, 0)
+writer.add_scalar('alexnet/compression/size_ratio', 4.0, 0)
+writer.add_scalar('alexnet/compression/accuracy_drop', 0.01, 0)
+
+writer.close()
+```
+
+#### Using CompressionWriter (if available)
+
+```python
+from tensorboardX.compression import CompressionWriter
+
+writer = CompressionWriter('runs/my_experiment')
+
+# Log FP32 vs INT8 comparison
+writer.log_compression_comparison('alexnet', fp32_metrics, int8_metrics)
+
+# Log compression ratios
+writer.log_compression_ratios('alexnet', fp32_metrics, int8_metrics)
+
+writer.close()
+```
+
+### Compression Metrics
+
+#### Tag Organization
+
+Metrics are organized hierarchically:
+- `{model_name}/metrics/accuracy/fp32` - FP32 accuracy
+- `{model_name}/metrics/accuracy/int8` - INT8 accuracy
+- `{model_name}/compression/size_ratio` - Compression ratio
+- `{model_name}/compression/speedup` - Speedup factor
+- `{model_name}/compression/accuracy_drop` - Accuracy drop
+- `{model_name}/performance/` - Performance metrics (latency, model size, energy, memory)
+
+#### Key Metrics
+
+- **Compression Ratio**: `fp32_size / int8_size`
+- **Speedup**: `fp32_latency / int8_latency`
+- **Accuracy Drop**: `fp32_accuracy - int8_accuracy`
+- **Size Reduction**: Percentage reduction in model size
 
 ---
 
@@ -193,5 +253,4 @@ This project extends tensorboardX for compression-specific use cases. Contributi
 
 ## Related Projects
 
-* [Compression Engine](../compression-engine/) - Model compression engine
 * [tensorboardX](https://github.com/lanpa/tensorboardX) - Base library
